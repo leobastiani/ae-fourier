@@ -1,0 +1,34 @@
+CC=g++
+STANDARD=c++11
+FLAGS=
+CFLAGS=-c $(FLAGS)
+LDFLAGS=$(FLAGS)
+STDFLAG=-std=$(STANDARD)
+SOURCES=$(wildcard *.cpp)
+OBJECTS=$(SOURCES:.cpp=.o)
+EXECUTABLE=a
+
+all: $(SOURCES) $(EXECUTABLE)
+	
+run: $(EXECUTABLE)
+	./$(EXECUTABLE)
+
+$(EXECUTABLE): $(OBJECTS)
+	$(CC) $(OBJECTS) -o $@ $(LDFLAGS) $(STDFLAG)
+
+debug: $(SOURCES)
+	$(CC) $(SOURCES) -o $(EXECUTABLE) $(LDFLAGS) $(STDFLAG) -g -DDEBUG
+
+test: $(SOURCES)
+	$(CC) $(SOURCES) -o $(EXECUTABLE) $(LDFLAGS) $(STDFLAG) -g -DDEBUG -DTEST
+	./$(EXECUTABLE)
+
+sublimegdb: $(SOURCES)
+	$(CC) $(SOURCES) -o $(EXECUTABLE) $(LDFLAGS) $(STDFLAG) -g -DDEBUG -DSGDB
+
+.cpp.o:
+	$(CC) $< -o $@ $(CFLAGS) $(STDFLAG)
+
+clear:
+	rm *.o &
+	rm $(EXECUTABLE)
